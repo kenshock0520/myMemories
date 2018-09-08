@@ -2,7 +2,6 @@
     <nuxt-link :to="'/pictures/' + id">
         <article class="picture">
             <div class="thumbnail" :style="{backgroundImage: 'url('+ thumbnail +')'}"></div>
-            <img src="\\main-pc/Users/kenta/Pictures/iCloud%20Photos/Shared/%E9%99%BD%E9%9F%B3/test.png">
             <h1>{{ title }}</h1>
             <p>{{ previewText }}</p>
         </article>

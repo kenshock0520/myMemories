@@ -8,7 +8,6 @@
         Nuxt.jsとFirebaseを使って簡単なWebサービスを作るテストです。
       </h2>
       <div class="links">
-        <Login v-if="!isLogin"></Login>
         <Mypage v-if="isLogin" :user="userData"></Mypage>
       </div>
     </div>
@@ -17,12 +16,10 @@
 
 <script>
 import firebase from '@/plugins/firebase'
-import Login from '~/components/Login.vue'
 import Mypage from '~/components/Mypage.vue'
 
 export default {
   components: {
-    Login,
     Mypage
   },
   asyncData (context) {
