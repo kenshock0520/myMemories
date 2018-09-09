@@ -201,6 +201,7 @@
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="userInfoDialog = false">Cancel</v-btn>  
           <v-btn flat color="primary" @click="googleSignOut">Logout</v-btn>
         </v-card-actions>
       </v-card>
@@ -217,7 +218,7 @@
       items: [
         { icon: 'contacts', text: 'next', link: '/next' },
         { icon: 'history', text: 'Frequently contacted', link: '/test' },
-        { icon: 'content_copy', text: 'Duplicates' },
+        { icon: 'content_copy', text: 'Duplicates', link: '/testUi' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
@@ -253,8 +254,6 @@
     methods: {
       googleSignOut () {
           this.$store.dispatch('signOut').then(() => {
-              console.log('signOut')
-              this.$router.push('/login')
           }).catch((e) => {
               console.log(e.message)
           })

@@ -31,6 +31,7 @@ const createStore = () => {
       signOut ({ commit }) {
         auth.signOut().then(() => {
           commit('setUser', null)
+          this.$router.go({ name: 'login' })
         }).catch(err => console.log(err))
       },
       setUser ({ commit }, payload) {
