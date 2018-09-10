@@ -5,6 +5,12 @@
         ".read": "$uid === auth.uid",
         ".write": "$uid === auth.uid"
       }
+    },
+    "messages": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
     }
   }
 }

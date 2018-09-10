@@ -37,7 +37,6 @@
             <v-list-tile
               v-for="(child, i) in item.children"
               :key="i"
-              @click=""
             >
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
@@ -91,12 +90,19 @@
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
-        <v-fade-transition mode="out-in">
-          <router-view></router-view>
-        </v-fade-transition>
+        <v-layout
+          justify-center
+          align-center
+        >
+          <v-flex text-xs-center>
+            <v-fade-transition mode="out-in">
+              <router-view></router-view>
+            </v-fade-transition>
+          </v-flex>
+        </v-layout>
       </v-container>
     </v-content>
-    <v-btn
+    <!-- <v-btn
       fab
       bottom
       right
@@ -106,7 +112,7 @@
       @click.stop="dialog = !dialog"
     >
       <v-icon>add</v-icon>
-    </v-btn>
+    </v-btn> -->
     <v-dialog v-model="dialog" width="800px">
       <v-card>
         <v-card-title
@@ -170,42 +176,46 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="userInfoDialog" width="800px">
-      <v-card>
-        <v-card-title
-          class="grey lighten-4 py-4 title"
-        >
-          ユーザー情報
-        </v-card-title>
-        <v-container grid-list-sm class="pa-4">
-          <v-layout row wrap>
-            <v-flex xs12 align-center justify-space-between>
-              <v-layout align-center>
-                <v-avatar size="40px" class="mr-3">
-                  <img
-                    :src="$store.state.user.photoURL"
-                  >
-                </v-avatar>
-                <v-card-text>{{ $store.state.user.displayName }}</v-card-text>
+    <template>
+      <v-layout row justify-center>
+        <v-dialog v-model="userInfoDialog" width="800px">
+          <v-card>
+            <v-card-title
+              class="grey lighten-4 py-4 title"
+            >
+              ユーザー情報
+            </v-card-title>
+            <v-container grid-list-sm class="pa-4">
+              <v-layout row wrap>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-layout align-center>
+                    <v-avatar size="40px" class="mr-3">
+                      <img
+                        :src="$store.state.user.photoURL"
+                      >
+                    </v-avatar>
+                    <v-card-text>{{ $store.state.user.displayName }}</v-card-text>
+                  </v-layout>
+                </v-flex>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-layout align-center>
+                    <v-avatar size="40px" class="mr-3">
+                      <v-icon>mail</v-icon>
+                    </v-avatar>
+                    <v-card-text>{{ $store.state.user.email }}</v-card-text>
+                  </v-layout>
+                </v-flex>
               </v-layout>
-            </v-flex>
-            <v-flex xs12 align-center justify-space-between>
-              <v-layout align-center>
-                <v-avatar size="40px" class="mr-3">
-                  <v-icon>mail</v-icon>
-                </v-avatar>
-                <v-card-text>{{ $store.state.user.email }}</v-card-text>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-        </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat color="primary" @click="userInfoDialog = false">Cancel</v-btn>  
-          <v-btn flat color="primary" @click="googleSignOut">Logout</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+            </v-container>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="userInfoDialog = false">Cancel</v-btn>  
+              <v-btn flat color="primary" @click="googleSignOut">Logout</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </template>
   </v-app>
 </template>
 
@@ -216,36 +226,10 @@
       userInfoDialog: false,
       drawer: null,
       items: [
-        { icon: 'contacts', text: 'next', link: '/next' },
-        { icon: 'history', text: 'Frequently contacted', link: '/test' },
-        { icon: 'content_copy', text: 'Duplicates', link: '/testUi' },
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'Labels',
-          model: true,
-          children: [
-            { icon: 'add', text: 'Create label' }
-          ]
-        },
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'More',
-          model: false,
-          children: [
-            { text: 'Import' },
-            { text: 'Export' },
-            { text: 'Print' },
-            { text: 'Undo changes' },
-            { text: 'Other contacts' }
-          ]
-        },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Send feedback' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Go to the old version' }
+        { icon: 'chat', text: 'chat', link: '/chat' },
+        { icon: 'contacts', text: 'next(test)', link: '/next' },
+        { icon: 'history', text: 'test', link: '/test' },
+        { icon: 'content_copy', text: 'testUi', link: '/testUi' }
       ]
     }),
     props: {
@@ -261,3 +245,8 @@
     }
   }
 </script>
+<style scoped>
+.container {
+    min-height: 0vh;
+}
+</style>
