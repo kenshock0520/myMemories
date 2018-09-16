@@ -1,63 +1,263 @@
 <template>
-  <div>
-    <nuxt/>
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer
+      fixed
+      clipped
+      app
+      v-model="drawer"
+    >
+      <v-list dense>
+        <template v-for="(item, i) in items">
+          <v-layout
+            row
+            v-if="item.heading"
+            align-center
+            :key="i"
+          >
+            <v-flex xs6>
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
+            </v-flex>
+            <v-flex xs6 class="text-xs-center">
+              <a href="#!" class="body-2 black--text">EDIT</a>
+            </v-flex>
+          </v-layout>
+          <v-list-group v-else-if="item.children" v-model="item.model" no-action>
+            <v-list-tile slot="item" :to="item.link">
+              <v-list-tile-action>
+                <v-icon>{{ item.model ? item.icon : item['icon-alt'] }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  {{ item.text }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile
+              v-for="(child, i) in item.children"
+              :key="i"
+            >
+              <v-list-tile-action v-if="child.icon">
+                <v-icon>{{ child.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  {{ child.text }}
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list-group>
+          <v-list-tile v-else  :to="item.link">
+            <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>
+                {{ item.text }}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar
+      color="blue darken-3"
+      dark
+      app
+      clipped-left
+      fixed
+    >
+      <v-toolbar-title :style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'" class="ml-0 pl-3">
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <span class="hidden-xs-only">MyMemories</span>
+      </v-toolbar-title>
+      <div class="d-flex align-center" style="margin-left: auto">
+        <v-btn icon>
+          <v-icon>apps</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon>notifications</v-icon>
+        </v-btn>
+        <v-btn icon large @click.stop="userInfoDialog = !userInfoDialog">
+          <v-avatar size="32px" tile>
+            <img
+              :src="photoURL"
+            >
+          </v-avatar>
+        </v-btn>
+      </div>
+    </v-toolbar>
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout
+          justify-center
+          align-center
+        >
+          <v-flex text-xs-center>
+            <v-fade-transition mode="out-in">
+              <nuxt />
+            </v-fade-transition>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+    <!-- <v-btn
+      fab
+      bottom
+      right
+      color="pink"
+      dark
+      fixed
+      @click.stop="dialog = !dialog"
+    >
+      <v-icon>add</v-icon>
+    </v-btn> -->
+    <v-dialog v-model="dialog" width="800px">
+      <v-card>
+        <v-card-title
+          class="grey lighten-4 py-4 title"
+        >
+          Create contact
+        </v-card-title>
+        <v-container grid-list-sm class="pa-4">
+          <v-layout row wrap>
+            <v-flex xs12 align-center justify-space-between>
+              <v-layout align-center>
+                <v-avatar size="40px" class="mr-3">
+                  <img
+                    src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png"
+                    alt=""
+                  >
+                </v-avatar>
+                <v-text-field
+                  placeholder="Name"
+                ></v-text-field>
+              </v-layout>
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                prepend-icon="business"
+                placeholder="Company"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                placeholder="Job title"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field
+                prepend-icon="mail"
+                placeholder="Email"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field
+                type="tel"
+                prepend-icon="phone"
+                placeholder="(000) 000 - 0000"
+                mask="phone"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <v-text-field
+                prepend-icon="notes"
+                placeholder="Notes"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <v-card-actions>
+          <v-btn flat color="primary">More</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="dialog = false">Cancel</v-btn>
+          <v-btn flat @click="dialog = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <template>
+      <v-layout row justify-center>
+        <v-dialog v-model="userInfoDialog" width="800px">
+          <v-card>
+            <v-card-title
+              class="grey lighten-4 py-4 title"
+            >
+              ユーザー情報
+            </v-card-title>
+            <v-container grid-list-sm class="pa-4">
+              <v-layout row wrap>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-layout align-center>
+                    <v-avatar size="40px" class="mr-3">
+                      <img
+                        :src="photoURL"
+                      >
+                    </v-avatar>
+                    <v-card-text>{{ displayName }}</v-card-text>
+                  </v-layout>
+                </v-flex>
+                <v-flex xs12 align-center justify-space-between>
+                  <v-layout align-center>
+                    <v-avatar size="40px" class="mr-3">
+                      <v-icon>mail</v-icon>
+                    </v-avatar>
+                    <v-card-text>{{ email }}</v-card-text>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn flat color="primary" @click="userInfoDialog = false">Cancel</v-btn>  
+              <v-btn flat color="primary" @click="googleSignOut">Logout</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </template>
+  </v-app>
 </template>
 
 <script>
-import Header from '@/components/Header'
-export default {
-  components: {
-    Header
+  export default {
+    data: () => ({
+      dialog: false,
+      userInfoDialog: false,
+      drawer: null,
+      items: [
+        { icon: 'chat', text: 'chat', link: '/chat' },
+        { icon: 'contacts', text: 'next(test)', link: '/next' },
+        { icon: 'history', text: 'test', link: '/test' },
+        { icon: 'content_copy', text: 'testUi', link: '/testUi' }
+      ]
+    }),
+    props: {
+      source: String
+    },
+    methods: {
+      googleSignOut () {
+          this.$store.dispatch('signOut').then(() => {
+          }).catch((e) => {
+              console.log(e.message)
+          })
+      }
+    },
+    computed: {
+      photoURL () {
+        return this.$store.state.userPhotoURL
+      },
+      displayName () {
+        return this.$store.state.userDisplayName
+      },
+      email () {
+        return this.$store.state.userEmail
+      }
+    }
   }
-}
 </script>
-
-
-<style>
-html
-{
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-*, *:before, *:after
-{
-  box-sizing: border-box;
-  margin: 0;
-}
-.button--green
-{
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-.button--green:hover
-{
-  color: #fff;
-  background-color: #3b8070;
-}
-.button--grey
-{
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-.button--grey:hover
-{
-  color: #fff;
-  background-color: #35495e;
+<style scoped>
+.container {
+    min-height: 0vh;
 }
 </style>

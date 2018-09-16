@@ -7,10 +7,16 @@
       }
     },
     "messages": {
-      "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid"
-      }
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "user": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "chats": {
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

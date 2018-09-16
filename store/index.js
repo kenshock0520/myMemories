@@ -1,10 +1,19 @@
 import Vuex from 'vuex'
 import { auth, GoogleProvider } from '@/plugins/firebase.js'
+import AuthModule from './AuthModule'
+import ChatModule from './ChatModule'
 
 const createStore = () => {
   return new Vuex.Store({
+    modules: {
+      auth: AuthModule,
+      chat: ChatModule
+    },
     state: {
-      user: null
+      user: null,
+      userEmail: '',
+      userDisplayName: '',
+      userPhotoURL: ''
     },
     getters: {
       activeUser: (state, getters) => {
@@ -14,6 +23,11 @@ const createStore = () => {
     mutations: {
       setUser (state, payload) {
         state.user = payload
+        if (payload != null) {
+          state.userDisplayName = state.user.displayName
+          state.userEmail = state.user.email
+          state.userPhotoURL = state.user.photoURL
+        }
       }
     },
     actions: {

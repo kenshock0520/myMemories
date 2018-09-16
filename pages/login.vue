@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { db } from '~/plugins/firebase'
 export default {
   data () {
     return {
@@ -50,6 +51,7 @@ export default {
     if (this.$store.state.user) {
       this.dialog = false
       // if non-null user given, go to root page.
+      this.registUser()
       this.$router.push('/')
     } else {
       this.dialog = true
@@ -66,13 +68,35 @@ export default {
     },
     update () {
       this.dialog = true
+    },
+    registUser () {
+      db.ref('user/' + this.$store.state.user.uid).set({
+        id: this.$store.state.user.uid,
+        name: this.$store.state.user.displayName,
+        email: this.$store.state.user.email,
+        photUrl: this.$store.state.user.photoURL
+      })
     }
   }
 }
 </script>
 
 <style lang="css">
-body{
-  background: #156fdb !important;
+.v-overlay--active:before {
+  opacity: 1.0 !important;
+}
+.v-overlay:before {
+  background-color: #156fdb;
+  bottom: 0;
+  content: '';
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: inherit;
+  transition-delay: 150ms;
+  width: 100%;
 }
 </style>
