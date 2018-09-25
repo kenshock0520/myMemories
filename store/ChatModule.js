@@ -16,7 +16,7 @@ const ChatModule = {
     sendMessage ({ commit }, payload) {
       let chatID = payload.chatID
       const message = {
-        user: payload.username,
+        user: payload.userid,
         content: payload.content,
         date: payload.date
       }

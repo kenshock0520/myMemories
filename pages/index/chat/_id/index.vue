@@ -57,6 +57,9 @@ export default {
     messages () {
       return this.chatMessages
     },
+    userid () {
+      return this.$store.state.user.uid
+    },
     username () {
       return this.$store.state.user.displayName
     },
@@ -152,7 +155,7 @@ export default {
     sendMessage () {
       if (this.content !== '') {
         var path = this.$route.params.id
-        this.$store.dispatch('sendMessage', { username: this.username, content: this.content, date: new Date().toString(), chatID: path })
+        this.$store.dispatch('sendMessage', { userid: this.userid, content: this.content, date: new Date().toString(), chatID: path })
         this.content = ''
       }
     },

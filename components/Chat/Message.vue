@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="message" v-for="(message,index) in messages" :key="message" :class="{own: message.user == username}">
-      <div class="username" v-if="index>0 && messages[index-1].user != message.user">{{message.user}}</div>
-      <div class="username" v-if="index == 0">{{message.user}}</div>
+    <div class="message" v-for="(message,index) in messages" :key="message" :class="{own: message.user == userid}">
+      <div class="username" v-if="index>0 && messages[index-1].user != message.user">{{ searchUser(message.user) }}</div>
+      <div class="username" v-if="index == 0">{{ searchUser(message.user) }}</div>
       <div style="margin-top: 5px"></div>
       <div class="content">
         <div v-html="message.content"></div>
@@ -15,9 +15,12 @@
 
 <script>
   import Image from '@/components/Chat/Image'
+  import * as firebase from 'firebase'
   export default {
     data () {
-      return {}
+      return {
+        user: []
+      }
     },
     props: [
       'messages'
@@ -25,14 +28,33 @@
     components: {
       'chat-image': Image
     },
+    mounted () {
+      this.getUserInfo()
+    },
     computed: {
-      username () {
-        return this.$store.state.user.displayName
+      userid () {
+        return this.$store.state.user.uid
+      }
+    },
+    watch: {
+      '$route.params.id' (newId, oldId) {
+        this.getUserInfo()
       }
     },
     methods: {
       imageLoad () {
         // this.$emit('imageLoad')
+      },
+      getUserInfo: function () {
+        const that = this
+        firebase.database().ref('user').on('value', function (snapshot) {
+          that.user = snapshot.val()
+        })
+      },
+      searchUser: function (val) {
+        console.log('user:' + val)
+        console.log('useraaaa:' + this.user)
+        return this.user[val].name
       }
     },
     filters: {
@@ -54,7 +76,7 @@
 
 <style>
   span.emoji {
-    font-size: 20px;
+    font-size: 14px;
     vertical-align: middle;
     line-height: 2;
   }
