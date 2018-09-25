@@ -80,7 +80,7 @@
           <v-icon>notifications</v-icon>
         </v-btn>
         <v-btn icon large @click.stop="userInfoDialog = !userInfoDialog">
-          <v-avatar size="32px" tile>
+          <v-avatar size="42px">
             <img
               :src='photoURL'
             >

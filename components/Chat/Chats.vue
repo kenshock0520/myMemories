@@ -44,7 +44,7 @@
     },
     methods: {
       create () {
-        this.$router.push('/dashBoard/chat/Create')
+        this.$router.push('/chat/Create')
       }
     }
   }

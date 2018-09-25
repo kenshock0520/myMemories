@@ -1,21 +1,24 @@
 
 <template>
   <v-layout row>
-    <v-flex xs12 sm10 order-xs2 style="position: relative;">
+    <!-- <v-flex xs12 sm10 order-xs2 style="position: relative;"> -->
+    <v-flex xs12 sm12 style="position: relative;">
+      <v-subheader>chatName　{{ chatName }}</v-subheader>
       <div class="chat-container" v-on:scroll="onScroll" ref="chatContainer" >
         <message :messages="messages" @imageLoad="scrollToEnd"></message>
       </div>
-      <emoji-picker :show="emojiPanel" @close="toggleEmojiPanel" @click="addMessage"></emoji-picker>
+      
       <div class="typer">
+        <emoji-picker :show="emojiPanel" @close="toggleEmojiPanel" @click="addMessage"></emoji-picker>
         <input type="text" placeholder="Type here..." v-on:keyup.enter="sendMessage" v-model="content">
         <v-btn icon class="blue--text emoji-panel" @click="toggleEmojiPanel">
           <v-icon>mood</v-icon>
         </v-btn>
       </div>
     </v-flex>
-    <v-flex sm2 order-xs1 class="scrollable">
+    <!-- <v-flex sm2 order-xs1 class="scrollable">
       <chats :btnDisp='false'></chats>
-    </v-flex>
+    </v-flex> -->
   </v-layout>
 </template>
 
@@ -29,6 +32,7 @@ import EmojiPicker from '@/components/Chat/EmojiPicker'
 export default {
   data () {
     return {
+      chatName: '',
       content: '',
       chatMessages: [],
       emojiPanel: false,
@@ -96,6 +100,10 @@ export default {
       if (path !== undefined) {
         this.chatMessages = []
         let chatID = path
+        const that = this
+        firebase.database().ref('chats').child(chatID).once('value').then(function (snapshot) {
+          that.chatName = snapshot.val().name
+        })
         this.currentRef = firebase.database().ref('messages').child(chatID).child('messages').limitToLast(20)
         this.currentRef.on('child_added', this.onChildAdded)
       }
@@ -129,7 +137,7 @@ export default {
       }
     },
     processMessage (message) {
-      /*eslint-disable */
+      /* eslint-disable */
       var imageRegex = /([^\s\']+).(?:jpg|jpeg|gif|png)/i
       /* eslint-enable */
       if (imageRegex.test(message.content)) {
@@ -175,17 +183,18 @@ export default {
 <style>
   .scrollable {
     overflow-y: auto;
-    height: 90vh;
+    height: 100vh;
   }
   .typer{
     box-sizing: border-box;
     display: flex;
     align-items: center;
     bottom: 0;
-    height: 4.9rem;
+    height: 2.4rem;
     width: 100%;
     background-color: #fff;
     box-shadow: 0 -5px 10px -5px rgba(0,0,0,.2);
+    position: fixed;
   }
   .typer .emoji-panel{
     /*margin-right: 15px;*/
@@ -198,7 +207,7 @@ export default {
     background-color: transparent;
     border: none;
     outline: none;
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
   .chat-container{
     box-sizing: border-box;
@@ -209,6 +218,7 @@ export default {
   }
   .message{
     margin-bottom: 3px;
+    text-align: left;
   }
   .message.own{
     text-align: right;
