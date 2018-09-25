@@ -23,7 +23,7 @@
               <a href="#!" class="body-2 black--text">EDIT</a>
             </v-flex>
           </v-layout>
-          <v-list-group v-else-if="item.children" v-model="item.model" no-action>
+          <v-list-group v-else-if="item.children" :key="item.model" v-model="item.model" no-action>
             <v-list-tile slot="item" :to="item.link">
               <v-list-tile-action>
                 <v-icon>{{ item.model ? item.icon : item['icon-alt'] }}</v-icon>
@@ -48,7 +48,7 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
-          <v-list-tile v-else  :to="item.link">
+          <v-list-tile v-else :key="item"  :to="item.link">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -82,7 +82,7 @@
         <v-btn icon large @click.stop="userInfoDialog = !userInfoDialog">
           <v-avatar size="32px" tile>
             <img
-              :src="photoURL"
+              :src='photoURL'
             >
           </v-avatar>
         </v-btn>
@@ -191,7 +191,7 @@
                   <v-layout align-center>
                     <v-avatar size="40px" class="mr-3">
                       <img
-                        :src="photoURL"
+                        :src='photoURL'
                       >
                     </v-avatar>
                     <v-card-text>{{ displayName }}</v-card-text>

@@ -29,10 +29,10 @@
     methods: {
       createChat () {
         if (this.chatName !== '') {
-          // let key = 0
+          let key = 0
           this.$store.dispatch('createChat', { chatName: this.chatName }).then((value) => {
-            // key = value
-            // this.$router.push('/chat/' + key)
+            key = value
+            this.$router.push('/chat/' + key)
           })
         }
       }

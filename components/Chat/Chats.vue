@@ -1,5 +1,17 @@
 <template>
   <v-list subheader>
+    <v-btn
+      v-if="btnDisp == true"
+      fab
+      bottom
+      right
+      color="pink"
+      dark
+      fixed
+      @click="create()"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
     <v-subheader>Recent Chats</v-subheader>
     <v-list-tile avatar v-for="(chat, index) in chats" v-bind:key="chat.name" :to="/chat/ + index">
       <v-list-tile-content>
@@ -14,6 +26,9 @@
 
 <script>
   export default{
+    props: [
+      'btnDisp'
+    ],
     data () {
       return {
         recentChats: 'Recent Chats'
@@ -25,6 +40,11 @@
     computed: {
       chats () {
         return this.$store.getters.chats
+      }
+    },
+    methods: {
+      create () {
+        this.$router.push('/chat/Create')
       }
     }
   }

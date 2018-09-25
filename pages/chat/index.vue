@@ -1,5 +1,5 @@
 <template>
-  <Chats />
+  <Chats :btnDisp='true' />
 </template>
 
 <script>
