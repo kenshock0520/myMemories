@@ -80,23 +80,3 @@ export default {
   }
 }
 </script>
-
-<style lang="css">
-.v-overlay--active:before {
-  opacity: 1.0 !important;
-}
-.v-overlay:before {
-  background-color: #156fdb;
-  bottom: 0;
-  content: '';
-  height: 100%;
-  left: 0;
-  opacity: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: inherit;
-  transition-delay: 150ms;
-  width: 100%;
-}
-</style>
